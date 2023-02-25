@@ -1,18 +1,47 @@
 package com.driver.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+
 @Entity
-@Table(name="customer")
+@Table
 public class Customer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int customerId;
-    private String userName;
+
+    private String mobile;
     private String password;
-    @OneToMany(mappedBy = "driver",cascade = CascadeType.ALL)
-    private List<TripBooking> tripBooking;
-    @ManyToOne
-    @JoinColumn
-    private Admin admin;
+
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    List<TripBooking> tripBookingList = new ArrayList<>();
+
+    public Customer(int customerId, String mobile, String password, List<TripBooking> tripBookingList) {
+        this.customerId = customerId;
+        this.mobile = mobile;
+        this.password = password;
+        this.tripBookingList = tripBookingList;
+    }
+
+    public List<TripBooking> getTripBookingList() {
+        return tripBookingList;
+    }
+
+    public void setTripBookingList(List<TripBooking> tripBookingList) {
+        this.tripBookingList = tripBookingList;
+    }
+
+    public Customer(int customerId, String mobile, String password) {
+        this.customerId = customerId;
+        this.mobile = mobile;
+        this.password = password;
+    }
+
+    public Customer() {
+    }
 
     public int getCustomerId() {
         return customerId;
@@ -22,12 +51,12 @@ public class Customer {
         this.customerId = customerId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getPassword() {
@@ -36,21 +65,5 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<TripBooking> getTripBooking() {
-        return tripBooking;
-    }
-
-    public void setTripBooking(List<TripBooking> tripBooking) {
-        this.tripBooking = tripBooking;
-    }
-
-    public Admin getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
     }
 }

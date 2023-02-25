@@ -1,25 +1,47 @@
 package com.driver.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+
 @Entity
-@Table(name="driver")
+@Table
 public class Driver {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int driverId;
-  private String  mobile;
+
+  private String mobile;
   private String password;
+
   @OneToOne
   @JoinColumn
   private Cab cab;
-  @OneToMany(mappedBy = "driver",cascade = CascadeType.ALL)
-  private List<TripBooking> tripBooking;
-  @ManyToOne
-  @JoinColumn
-  private Admin admin;
 
-  public Driver(int driverId, String mobile) {
+  @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL)
+  List<TripBooking> tripBookingList = new ArrayList<>();
+
+  public List<TripBooking> getTripBookingList() {
+    return tripBookingList;
+  }
+
+  public void setTripBookingList(List<TripBooking> tripBookingList) {
+    this.tripBookingList = tripBookingList;
+  }
+
+  public Driver(int driverId, String mobile, String password, Cab cab) {
     this.driverId = driverId;
     this.mobile = mobile;
+    this.password = password;
+    this.cab = cab;
+  }
+
+  public Driver() {
+  }
+
+  public Driver(String mobile, String password) {
+    this.mobile = mobile;
+    this.password = password;
   }
 
   public int getDriverId() {
@@ -52,21 +74,5 @@ public class Driver {
 
   public void setCab(Cab cab) {
     this.cab = cab;
-  }
-
-  public List<TripBooking> getTripBooking() {
-    return tripBooking;
-  }
-
-  public void setTripBooking(List<TripBooking> tripBooking) {
-    this.tripBooking = tripBooking;
-  }
-
-  public Admin getAdmin() {
-    return admin;
-  }
-
-  public void setAdmin(Admin admin) {
-    this.admin = admin;
   }
 }
